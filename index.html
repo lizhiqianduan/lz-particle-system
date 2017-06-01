@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>粒子示例</title>
+    <style>
+        body{
+            overflow: hidden;
+        }
+        .particle{
+            position: absolute;
+            width:4px;
+            height: 4px;
+            background-color: red;
+            left:0;
+            top:0;
+        }
+    </style>
+</head>
+<body>
+	
+
+
+
+	<script src="./particles.js"></script>
+	<script>
+		var sys = new Particles();
+        sys.onFrameComputed = function(currentParticles){
+            for(var key in currentParticles){
+                var particle = currentParticles[key];
+                createDomByParticle(particle);
+            }
+        };
+        sys.start();
+
+
+
+        function createDomByParticle(particle){
+            var dom = document.getElementById("particle-"+particle.id);
+            if(dom){
+                dom.style = "left:"+particle.x+"px;top:"+particle.y+"px;";
+                return;
+            }
+            dom = document.createElement("div");
+            dom.id = "particle-"+particle.id;
+            dom.className = "particle";
+            dom.style = "left:"+particle.x+"px;top:"+particle.y+"px;";
+            document.body.appendChild(dom);
+        }
+	</script>
+</body>
+</html>
