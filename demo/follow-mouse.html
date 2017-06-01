@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>粒子示例-火焰</title>
+    <style>
+        body{
+            overflow: hidden;
+            background-color: black;
+            color: red;
+        }
+        .particle{
+            position: absolute;
+            width:4px;
+            height: 4px;
+            background-color: greenyellow;
+            left:0;
+            top:0;
+        }
+    </style>
+</head>
+<body>
+
+跟随鼠标这个粒子效果还不错吧！
+
+
+<script src="../src/particles.js"></script>
+<script>
+
+
+    var config = {
+        emmitterArea:{
+            x0:300,y0:300,
+            x1:300,y1:300
+        },
+        accelerationXArea:[0,10],                       // x轴粒子的加速度范围
+        accelerationYArea:[0,10],                        // y轴粒子的加速度范围
+        axisXInitSpeedArea:[20,30],                      // x轴粒子的初始速度范围
+        axisYInitSpeedArea:[20,30],                      // y轴粒子的初始速度范围
+        aliveMaxTime:1000,                             // 粒子最大存活时间
+        particlesMaxCount:50                           // 粒子最大数目
+    };
+
+
+
+    var sys = new Particles(config).start();
+    sys.onFrameComputed = renderAllParticles;
+
+
+    document.onmousemove = function(e){
+        config.emmitterArea = {
+            x0:e.clientX,y0:e.clientY,
+            x1:e.clientX,y1:e.clientY
+        };
+        sys.changeConfig(config);
+    };
+
+
+
+
+
+
+    // 渲染所有粒子
+    function renderAllParticles(currentParticles){
+        for(var key in currentParticles){
+            var particle = currentParticles[key];
+            createDomByParticle.apply(this,[particle]);
+        }
+    }
+    function createDomByParticle(particle){
+        var dom = document.getElementById("particle-"+this.sysId + "-" +particle.id);
+        if(dom){
+            dom.style = "left:"+particle.x+"px;top:"+particle.y+"px;";
+            return;
+        }
+        dom = document.createElement("div");
+        dom.id = "particle-"+this.sysId + "-" +particle.id;
+        dom.className = "particle";
+        dom.style = "left:"+particle.x+"px;top:"+particle.y+"px;";
+        document.body.appendChild(dom);
+    }
+</script>
+</body>
+</html>

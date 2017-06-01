@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>粒子示例-火焰</title>
+    <style>
+        body{
+            overflow: hidden;
+            background-color: black;
+            color: red;
+        }
+        .particle{
+            position: absolute;
+            width:4px;
+            height: 4px;
+            background-color: greenyellow;
+            left:0;
+            top:0;
+        }
+    </style>
+</head>
+<body>
+
+看流星！
+
+
+<script src="../src/particles.js"></script>
+<script>
+
+    var x = -120; var y = 80;
+    var config = {
+        emmitterArea:{
+            x0:x,y0:y,
+            x1:x+5,y1:y+5
+        },
+        accelerationXArea:[-20,-20],                       // x轴粒子的加速度范围
+        accelerationYArea:[0,0],                        // y轴粒子的加速度范围
+        axisXInitSpeedArea:[-80,-20],                      // x轴粒子的初始速度范围
+        axisYInitSpeedArea:[-40,-30],                      // y轴粒子的初始速度范围
+        aliveMaxTime:1000,                             // 粒子最大存活时间
+        particlesMaxCount:100                           // 粒子最大数目
+    };
+
+    var sys = new Particles(config).start();
+    sys.onFrameComputed = renderAllParticles;
+
+    setInterval(function(){
+        x = -120; y = 80;
+        config.emmitterArea={x0:x,y0:y,x1:x+5,y1:y+5};
+        sys.changeConfig(config);
+    },8000);
+
+
+
+    // 渲染所有粒子
+    function renderAllParticles(currentParticles){
+        for(var key in currentParticles){
+            var particle = currentParticles[key];
+            createDomByParticle.apply(this,[particle]);
+        }
+
+        x+=4;y+=2;
+        config.emmitterArea={x0:x,y0:y,x1:x+5,y1:y+5};
+        sys.changeConfig(config);
+    }
+    function createDomByParticle(particle){
+        var dom = document.getElementById("particle-"+this.sysId + "-" +particle.id);
+        if(dom){
+            dom.style = "left:"+particle.x+"px;top:"+particle.y+"px;";
+            return;
+        }
+        dom = document.createElement("div");
+        dom.id = "particle-"+this.sysId + "-" +particle.id;
+        dom.className = "particle";
+        dom.style = "left:"+particle.x+"px;top:"+particle.y+"px;";
+        document.body.appendChild(dom);
+    }
+</script>
+</body>
+</html>

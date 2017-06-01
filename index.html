@@ -2,38 +2,62 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>粒子示例</title>
+	<title>粒子示例-漫天大雪</title>
     <style>
         body{
             overflow: hidden;
+            background-color: black;
+            color: blue;
         }
         .particle{
             position: absolute;
             width:4px;
             height: 4px;
-            background-color: red;
+            background-color: white;
             left:0;
             top:0;
         }
     </style>
 </head>
 <body>
-	
 
 
+这个例子展示粒子效果漫天的大雪！
 
-	<script src="./particles.js"></script>
+<br/>
+
+demo目录有更多效果展示！
+
+
+	<script src="./src/particles.js"></script>
 	<script>
-		var sys = new Particles();
-        sys.onFrameComputed = function(currentParticles){
+
+
+        var config = {
+            emmitterArea:{
+                x0:0,y0:-100,
+                x1:2000,y1:0
+            },
+            accelerationXArea:[-5,5],                       // x轴粒子的加速度范围
+            accelerationYArea:[10,20],                        // y轴粒子的加速度范围
+            axisXInitSpeedArea:[0,10],                      // x轴粒子的初始速度范围
+            axisYInitSpeedArea:[100,200],                      // y轴粒子的初始速度范围
+            particlesMaxCount:200                           // 粒子最大数目
+        };
+
+
+        new Particles(config).start().onFrameComputed = renderAllParticles;
+
+
+
+
+        // 渲染所有粒子。这里用dom，也可以用canvas开启webgl加速
+        function renderAllParticles(currentParticles){
             for(var key in currentParticles){
                 var particle = currentParticles[key];
                 createDomByParticle(particle);
             }
-        };
-        sys.start();
-
-
+        }
 
         function createDomByParticle(particle){
             var dom = document.getElementById("particle-"+particle.id);

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>粒子示例-火焰</title>
+    <style>
+        body{
+            overflow: hidden;
+            background-color: black;
+            color: red;
+        }
+        .particle{
+            position: absolute;
+            width:4px;
+            height: 4px;
+            background-color: yellow;
+            left:0;
+            top:0;
+        }
+    </style>
+</head>
+<body>
+
+本来想做一团火焰的，但是做成了下面这个玩意儿！
+<br/>
+不过不要在意，本例的用途是要告诉你，同一个页面可以用多个粒子效果叠加成一个效果。
+<br/>
+那团黄色的东西就是三个粒子效果叠加出来的！
+
+
+<script src="../src/particles.js"></script>
+<script>
+
+
+    var config = {
+        emmitterArea:{
+            x0:300,y0:300,
+            x1:400,y1:300
+        },
+        accelerationXArea:[-5,5],                       // x轴粒子的加速度范围
+        accelerationYArea:[-50,-20],                        // y轴粒子的加速度范围
+        axisXInitSpeedArea:[0,0],                      // x轴粒子的初始速度范围
+        axisYInitSpeedArea:[-30,0],                      // y轴粒子的初始速度范围
+        aliveMaxTime:1000,                             // 粒子最大存活时间
+        particlesMaxCount:500                           // 粒子最大数目
+    };
+
+
+
+    new Particles(config).start().onFrameComputed = renderAllParticles;
+    config.emmitterArea = {x0:320,y0:280,x1:380,y1:280};
+    config.particlesMaxCount = 100;
+    new Particles(config).start().onFrameComputed = renderAllParticles;
+    config.emmitterArea = {x0:340,y0:260,x1:360,y1:260};
+    config.particlesMaxCount = 50;
+    new Particles(config).start().onFrameComputed = renderAllParticles;
+
+
+
+
+
+
+
+
+    // 渲染所有粒子
+    function renderAllParticles(currentParticles){
+        for(var key in currentParticles){
+            var particle = currentParticles[key];
+            createDomByParticle.apply(this,[particle]);
+        }
+    }
+    function createDomByParticle(particle){
+        var dom = document.getElementById("particle-"+this.sysId + "-" +particle.id);
+        if(dom){
+            dom.style = "left:"+particle.x+"px;top:"+particle.y+"px;";
+            return;
+        }
+        dom = document.createElement("div");
+        dom.id = "particle-"+this.sysId + "-" +particle.id;
+        dom.className = "particle";
+        dom.style = "left:"+particle.x+"px;top:"+particle.y+"px;";
+        document.body.appendChild(dom);
+    }
+</script>
+</body>
+</html>
