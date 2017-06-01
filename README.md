@@ -9,9 +9,10 @@ Javascript写的粒子系统
 看效果的话，效果直接下载，点击index.html即可，欢迎拍砖点赞。
 
 # 用法
-```javascript
 
-    // 1、配置json信息，示例
+## 1、配置json信息，示例
+
+```javascript
     var config = {
         emmitterArea:{x0:0,y0:-100,x1:2000,y1:0},       // 粒子发射区域
         accelerationXArea:[-5,5],                       // x轴粒子的加速度范围
@@ -20,20 +21,30 @@ Javascript写的粒子系统
         axisYInitSpeedArea:[100,200],                      // y轴粒子的初始速度范围
         particlesMaxCount:200                           // 粒子最大数目
     };
+```
 
-    // 2、新建系统
+## 2、新建系统
+
+```javascript
     var sys = new Particles(config);
+```
 
-    // 3、启动
+## 3、启动
+
+```javascript    
     sys.start();
+```
 
-    // 4、监听事件对应绘制
+## 4、监听事件对应绘制
+
+```javascript
     sys.onFrameComputed = renderAllParticles;
 
     function renderAllParticles(particles){
       // 这里对所有粒子进行渲染，可以是dom、也可以是canvas
     }
 ```
+
 更多示例请查看demo示例！
 
 更多经验技术，欢迎访问我的博客网址 http://www.lizhiqianduan.com
